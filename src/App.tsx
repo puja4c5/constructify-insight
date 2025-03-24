@@ -14,7 +14,15 @@ import Demo from "./pages/Demo";
 import ProjectDetail from "./pages/ProjectDetail";
 import NotFound from "./pages/NotFound";
 
-const queryClient = new QueryClient();
+// Initialize the QueryClient
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 1,
+    },
+  },
+});
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -23,19 +31,23 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
+          {/* Public routes */}
           <Route path="/" element={<Index />} />
           <Route path="/features" element={<Features />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/demo" element={<Demo />} />
           <Route path="/auth" element={<Auth />} />
+          
+          {/* Dashboard routes */}
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/dashboard/projects" element={<Dashboard />} />
           <Route path="/dashboard/projects/:id" element={<ProjectDetail />} />
           <Route path="/dashboard/projects/new" element={<Dashboard />} />
           <Route path="/dashboard/team" element={<Dashboard />} />
           <Route path="/dashboard/settings" element={<Dashboard />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          
+          {/* Catch-all route for 404 */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
