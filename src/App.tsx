@@ -7,6 +7,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
+import Features from "./pages/Features";
+import Pricing from "./pages/Pricing";
+import Contact from "./pages/Contact";
+import Demo from "./pages/Demo";
+import ProjectDetail from "./pages/ProjectDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -19,10 +24,14 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/features" element={<Features />} />
+          <Route path="/pricing" element={<Pricing />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/demo" element={<Demo />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          {/* These routes would be implemented in future iterations */}
           <Route path="/dashboard/projects" element={<Dashboard />} />
+          <Route path="/dashboard/projects/:id" element={<ProjectDetail />} />
           <Route path="/dashboard/projects/new" element={<Dashboard />} />
           <Route path="/dashboard/team" element={<Dashboard />} />
           <Route path="/dashboard/settings" element={<Dashboard />} />

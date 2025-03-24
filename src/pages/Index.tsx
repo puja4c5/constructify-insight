@@ -4,6 +4,8 @@ import Footer from "@/components/layout/Footer";
 import Hero from "@/components/home/Hero";
 import Features from "@/components/home/Features";
 import About from "@/components/home/About";
+import Pricing from "@/components/home/Pricing";
+import Contact from "@/components/home/Contact";
 
 const Index = () => {
   return (
@@ -13,8 +15,8 @@ const Index = () => {
         <Hero />
         <Features />
         <About />
-        
-        {/* More sections could be added here */}
+        <Pricing />
+        <Contact />
       </main>
       <Footer />
     </div>

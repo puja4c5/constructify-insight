@@ -1,13 +1,17 @@
 
 import { useState } from "react";
-import { Building2, Upload, Plus, BarChart3, RefreshCw } from "lucide-react";
+import { useLocation } from "react-router-dom";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import ProgressCard from "@/components/dashboard/ProgressCard";
-import ImageUploader from "@/components/upload/ImageUploader";
+import ProjectsPage from "@/components/dashboard/ProjectsPage";
+import TeamMembersPage from "@/components/dashboard/TeamMembersPage";
+import SettingsPage from "@/components/dashboard/SettingsPage";
+import { Building2, Upload, Plus, BarChart3, RefreshCw } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import ImageUploader from "@/components/upload/ImageUploader";
 
 // Mock data for projects
 const projectsData = [
@@ -53,7 +57,7 @@ const projectsData = [
     description: "Eco-friendly residential development with 80 villas",
     progress: 100,
     status: "completed" as const,
-    imageSrc: "https://images.unsplash.com/photo-1448630360428-65456885c650?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2067&q=80",
+    imageSrc: "https://images.unsplash.com/photo-1448630360428-65456885a650?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2067&q=80",
     lastUpdated: "1 month ago",
   },
   {
@@ -68,6 +72,7 @@ const projectsData = [
 ];
 
 const Dashboard = () => {
+  const location = useLocation();
   const [activeTab, setActiveTab] = useState("overview");
   const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
@@ -77,29 +82,18 @@ const Dashboard = () => {
     setTimeout(() => setRefreshing(false), 1500);
   };
 
-  const statCards = [
-    {
-      title: "Total Projects",
-      value: "12",
-      description: "3 active, 2 pending, 7 completed",
-      icon: <Building2 className="h-5 w-5 text-blue-500" />,
-    },
-    {
-      title: "Progress",
-      value: "68%",
-      description: "Average across all active projects",
-      icon: <BarChart3 className="h-5 w-5 text-green-500" />,
-    },
-    {
-      title: "Recent Updates",
-      value: "8",
-      description: "In the last 7 days",
-      icon: <Upload className="h-5 w-5 text-purple-500" />,
-    },
-  ];
+  // Determine which page to show based on the current route
+  const renderDashboardContent = () => {
+    if (location.pathname === "/dashboard/projects") {
+      return <ProjectsPage />;
+    } else if (location.pathname === "/dashboard/team") {
+      return <TeamMembersPage />;
+    } else if (location.pathname === "/dashboard/settings") {
+      return <SettingsPage />;
+    }
 
-  return (
-    <DashboardLayout>
+    // Default dashboard overview
+    return (
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
@@ -141,7 +135,26 @@ const Dashboard = () => {
         
         {/* Stats cards */}
         <div className="grid gap-4 md:grid-cols-3">
-          {statCards.map((stat, index) => (
+          {[
+            {
+              title: "Total Projects",
+              value: "12",
+              description: "3 active, 2 pending, 7 completed",
+              icon: <Building2 className="h-5 w-5 text-blue-500" />,
+            },
+            {
+              title: "Progress",
+              value: "68%",
+              description: "Average across all active projects",
+              icon: <BarChart3 className="h-5 w-5 text-green-500" />,
+            },
+            {
+              title: "Recent Updates",
+              value: "8",
+              description: "In the last 7 days",
+              icon: <Upload className="h-5 w-5 text-purple-500" />,
+            },
+          ].map((stat, index) => (
             <Card key={index}>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
@@ -243,8 +256,10 @@ const Dashboard = () => {
           </TabsContent>
         </Tabs>
       </div>
-    </DashboardLayout>
-  );
+    );
+  };
+
+  return <DashboardLayout>{renderDashboardContent()}</DashboardLayout>;
 };
 
 export default Dashboard;
